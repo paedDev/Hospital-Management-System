@@ -4,9 +4,15 @@ import connectDB from "./db/connectDb.js";
 import userRoutes from "./routes/userRoutes.js";
 import routesChecking from "./routes/routesChecking.js";
 dotenv.config();
-const app = express();
-app.use(express.json());
 const PORT = process.env.PORT || 5000;
+const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:3000" || process.env.FE_URL,
+  })
+);
+app.use(express.json());
 
 app.use("/api/auth/", userRoutes);
 app.use("/api/", routesChecking);
