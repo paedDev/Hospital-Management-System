@@ -1,5 +1,14 @@
+import Arrays from "./components/Arrays.tsx";
+import Button from "./components/Button.tsx";
+import Index from "./components/index.tsx";
 const App = () => {
-  return <div className="text-lg text-yellow-400 ">App</div>;
+  return (
+    <div className=" ">
+      <Arrays />
+      <Index />
+      <Button backgroundColor="blue" fontSize={10} />
+    </div>
+  );
 };
 
 export default App;
