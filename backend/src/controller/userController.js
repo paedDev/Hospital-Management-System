@@ -6,17 +6,8 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
-    const { firstName, lastName, phone, profileImage, email, password, role } =
-      req.body;
-    if (
-      !firstName ||
-      !lastName ||
-      !phone ||
-      !profileImage ||
-      !email ||
-      !password ||
-      !role
-    ) {
+    const { firstName, lastName, email, password, role } = req.body;
+    if (!firstName || !lastName || !email || !password || !role) {
       return res.status(400).json({
         message: "Fill all the fields",
       });
@@ -33,8 +24,7 @@ export const register = async (req, res) => {
     const newUser = new User({
       firstName,
       lastName,
-      phone,
-      profileImage,
+
       email,
       password: hashedPassword,
       role,
@@ -110,17 +100,8 @@ export const getAllUsers = async (req, res) => {
 //Update an account
 export const updateUsers = async (req, res) => {
   const id = req.params.id;
-  const { firstName, lastName, phone, profileImage, email, password } =
-    req.body;
-  if (
-    !firstName &&
-    !lastName &&
-    !phone &&
-    !profileImage &&
-    !email &&
-    !password &&
-    !role === undefined
-  ) {
+  const { firstName, lastName, email, password } = req.body;
+  if (!firstName && !lastName && !email && !password && !role === undefined) {
     return res.status(400).json({
       message: "At least one field must be provided for update",
     });
@@ -140,7 +121,7 @@ export const updateUsers = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { firstName, lastName, phone, profileImage, email, password },
+      { firstName, lastName, email, password },
       {
         new: true,
         runValidators: true,
