@@ -1,12 +1,47 @@
 import { Link } from "react-router-dom";
-
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  try {
-  } catch (error) { }
-};
+import { useGlobalContext } from "../../context/context";
+import { BASE_URL } from "../../config/config";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import axios from 'axios';
 
 const Login = () => {
+  const { navigate, loading, error, setLoading, setError, login } = useGlobalContext();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const handleValueChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      setLoading(true);
+      const response = await axios.post(`${BASE_URL}/api/auth/login`, formData);
+      console.log(response.data);
+      const token = response.data.token;
+      const userData = response.data.user;
+      login(token, userData);
+    } catch (error) {
+      console.error(`Error Login`);
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      }
+      else {
+        toast.error("Failed to login");
+        console.log(`Error in Login`, error);
+
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <section className="bg max-w-8xl mx-auto flex items-center min-h-screen justify-center ">
       <div className="bg-white opacity-60 w-full max-w-lg p-6 relative rounded-xl shadow-2xl ">
@@ -31,6 +66,8 @@ const Login = () => {
               Email
             </label>
             <input
+              onChange={handleValueChange}
+              value={formData.email}
               type="text"
               id="email"
               name="email"
@@ -47,6 +84,8 @@ const Login = () => {
               Password
             </label>
             <input
+              onChange={handleValueChange}
+              value={formData.password}
               id="password"
               name="password"
               type="password"

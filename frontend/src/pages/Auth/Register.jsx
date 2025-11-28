@@ -2,11 +2,11 @@ import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { BASE_URL } from "../../config/config";
 import { useGlobalContext } from "../../context/context";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import axios from 'axios';
 const optionRole = ["admin", "doctor", "patient"];
 const Register = () => {
-  const { navigate, loading, error, setLoading } = useGlobalContext();
+  const { navigate, loading, error, setLoading, setError } = useGlobalContext();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -36,7 +36,7 @@ const Register = () => {
         `${BASE_URL}/api/auth/register`,
         formData
       );
-      toast.success('Successfully created an account');
+      toast.success("Successfully created an account!");
       setTimeout(() => {
         navigate("/login");
       }, 1000);
@@ -50,7 +50,7 @@ const Register = () => {
       });
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed");
-      toast.error(error);
+      // toast.error(error.response?.data?.message);
       console.error("Registration error:", error);
     } finally {
       setLoading(false);

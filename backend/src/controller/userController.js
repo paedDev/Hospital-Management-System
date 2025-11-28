@@ -62,6 +62,8 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       {
         userId: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         role: user.role,
       },
@@ -73,7 +75,13 @@ export const login = async (req, res) => {
     res.status(200).json({
       message: "Login Successfully",
       token,
-      user: { id: user._id, email: user.email, role: user.role },
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
     });
   } catch (error) {
     console.error(`Error in login`, error);
