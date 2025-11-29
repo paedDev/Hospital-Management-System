@@ -6,17 +6,17 @@ import { Navigate } from 'react-router-dom';
 
 
 const UserDashboard = () => {
-  const { logout, user } = useGlobalContext();
+  const { logout, user, loading } = useGlobalContext();
+  if (loading || !user) {
+    return <div>Loading...</div>;
+  }
   if (user?.role !== 'patient') {
     return <Navigate to="/not-found" replace />;
   }
   return (
     <>
 
-      <header className='ml-20 '>
-        <h1>Welcome, {user?.firstName || 'User'}!</h1>
-        <button className='' onClick={logout}>Logout </button>
-      </header>
+
       <main className='p-6'>
         Hello this is user dashboard
       </main>

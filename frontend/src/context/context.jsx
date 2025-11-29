@@ -5,7 +5,10 @@ export const GlobalContext = createContext();
 
 
 export const GlobalProvider = ({ children }) => {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  });
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,7 +17,13 @@ export const GlobalProvider = ({ children }) => {
   const handleSetExpanded = () => {
     setExpanded((prev) => !prev);
   };
-
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
@@ -40,6 +49,7 @@ export const GlobalProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/");
   };
   const value = {

@@ -13,17 +13,12 @@ const AdminDashboard = () => {
     // or: return <NotFound />;
   }
   return (
-    <>
 
-      <header className='ml-20'>
-        <h1>Welcome, {user?.firstName || 'User'}!</h1>
-        <button className='' onClick={logout}>Logout </button>
-      </header>
-      <main>
-        Hello this is admin dashboard
-      </main>
+    <section className='p-6'>
+      Hello this is admin dashboard
+    </section>
 
-    </>
+
   );
 };
 
