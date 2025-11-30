@@ -17,7 +17,7 @@ const Sidebar = ({ children }) => {
               expanded ? "" : "HMS Management"}</h2>
           </div>
 
-          <button onClick={handleSetExpanded} className='absolute -right-16'>
+          <button onClick={handleSetExpanded} className={`${expanded ? 'absolute -right-4' : ''}`}>
             {
               expanded ? <ChevronLast /> : <ChevronFirst />
             }

@@ -79,7 +79,7 @@ const App = () => {
       )}
       <div className='w-full'>
         {
-          isAuthenticated ? (<header className=' p-6 mt-8 border-b '>
+          isAuthenticated ? (<header className=' p-6  border-b '>
             <div className='flex items-center justify-between'>
               <h1>Welcome, {user?.firstName || 'User'}!</h1>
               {/* Switch */}

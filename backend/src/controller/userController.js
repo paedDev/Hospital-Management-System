@@ -108,8 +108,8 @@ export const getAllUsers = async (req, res) => {
 //Update an account
 export const updateUsers = async (req, res) => {
   const id = req.params.id;
-  const { firstName, lastName, email, password } = req.body;
-  if (!firstName && !lastName && !email && !password && !role === undefined) {
+  const { firstName, lastName, email, password, role } = req.body;
+  if (!firstName && !lastName && !email && !password && role === undefined) {
     return res.status(400).json({
       message: "At least one field must be provided for update",
     });
@@ -145,6 +145,11 @@ export const updateUsers = async (req, res) => {
 export const deleteUsers = async (req, res) => {
   const id = req.params.id;
   try {
+    if (req.user.userId === id) {
+      return res.status(403).json({
+        error: "Cannot delete your own account",
+      });
+    }
     const deletedUser = await User.findByIdAndDelete(id);
     if (!deletedUser) {
       return res.status(404).json({
