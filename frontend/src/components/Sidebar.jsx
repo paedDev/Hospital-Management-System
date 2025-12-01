@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { ChevronFirst, ChevronLast, EllipsisVertical } from "lucide-react";
-import { NavLink } from 'react-router-dom';
+import { ChevronFirst, ChevronLast, EllipsisVertical, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link, NavLink } from 'react-router-dom';
 import { useGlobalContext } from '../context/context';
 const Sidebar = ({ children }) => {
   const { expanded, handleSetExpanded } = useGlobalContext();
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
+  const handleSetIsOpen = () => {
+    setIsOpen((prev) => !prev);
+    console.log(isOpen);
+
+  };
   return (
     <aside className='min-h-screen'>
       <nav className={`flex flex-col justify-between  border-r border-gray-200 shadow-xl p-4  h-full ${expanded ? "w-20" : "w-64"} transition-all duration-300 ease-linear`}>
@@ -30,15 +36,34 @@ const Sidebar = ({ children }) => {
         </ul>
 
         {/* Footer */}
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between relative'>
           <img src="" alt="Logo" />
           <div className={`${expanded ? "hidden" : "text-xs"}`}>
             <h2>username</h2>
             <p>Jannoelpaed@gmail.com</p>
           </div>
-          <button>
-            <EllipsisVertical />
+
+          <div className='absolute bottom-10 -right-6 px-6 py-2  '>
+            {
+              isOpen ? <div className='flex flex-col justify-end items-center space-y-2 border px-2 py-2'>
+                <Button variant="outline">
+
+                  <Link> Settings</Link>
+                </Button>
+                <Button variant="outline">
+
+                  <Link>  Logout</Link>
+                </Button>
+              </div> : ""
+            }
+          </div>
+          <button onClick={handleSetIsOpen}>
+            {
+              isOpen ? <X /> : <EllipsisVertical />
+            }
           </button>
+
+
         </div>
       </nav>
     </aside>
