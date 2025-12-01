@@ -12,6 +12,7 @@ const Router = express.Router();
 // Public routes
 Router.post("/register", register);
 Router.post("/login", login);
+
 Router.get("/users", verifyToken, verifyRole("admin"), getAllUsers);
 Router.put("/users/:id", verifyToken, updateUsers);
 Router.delete("/users/:id", verifyToken, verifyRole("admin"), deleteUsers);
