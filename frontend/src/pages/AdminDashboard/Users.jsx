@@ -19,7 +19,7 @@ import { BASE_URL } from '../../config/config';
 
 const Users = () => {
   const { user } = useGlobalContext();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useStatze(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState([]);
 
@@ -33,8 +33,6 @@ const Users = () => {
         setUserData(response.data.users || []);
 
       } catch (error) {
-
-
         toast.error(error.response?.data?.message || 'Failed to fetch users');
         setError(error.response?.data?.message || 'Failed to fetch users');
       } finally {

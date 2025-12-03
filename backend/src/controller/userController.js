@@ -105,6 +105,27 @@ export const getAllUsers = async (req, res) => {
     });
   }
 };
+
+export const getSingleUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    res.status(200).json({
+      user,
+      message: "User fetched successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching user",
+      error: error.message,
+    });
+  }
+};
 //Update an account
 export const updateUsers = async (req, res) => {
   const id = req.params.id;
@@ -129,7 +150,7 @@ export const updateUsers = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { firstName, lastName, email, password },
+      { firstName, lastName, email, password, role },
       {
         new: true,
         runValidators: true,

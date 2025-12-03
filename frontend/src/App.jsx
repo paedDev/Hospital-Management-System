@@ -3,7 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import UserDashboard from './pages/UserDashboard/UserDashboard';
-import { LayoutDashboard, UserRound, ClipboardClock, Clipboard, } from 'lucide-react';
+import { LayoutDashboard, UserRound, ClipboardClock, Clipboard, Moon, Sun, } from 'lucide-react';
 import { SideBarItem } from './components/sidebar';
 import Sidebar from './components/sidebar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -11,6 +11,8 @@ import NotFound from './pages/NotFound';
 import { useGlobalContext } from './context/context';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import Users from './pages/AdminDashboard/Users';
+import { useState } from 'react';
+import UpdateUser from './pages/UpdateUser.jsx';
 
 const App = () => {
   const { user, isAuthenticated, logout } = useGlobalContext();
@@ -22,6 +24,10 @@ const App = () => {
   const isAdmin = user?.role === "admin";
   const isDoctor = user?.role === "doctor";
   const isPatient = user?.role === "patient";
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme"));
+  const handleTheme = () => {
+    setTheme((prev) => !prev);
+  };
   return (
     <div className='min-h-screen flex'>
       {showSidebar && (
@@ -83,19 +89,30 @@ const App = () => {
             <div className='flex items-center justify-between'>
               <h1>Welcome, {user?.firstName || 'User'}!</h1>
               {/* Switch */}
-              <button className='' onClick={logout}>Logout </button>
+              <button onClick={handleTheme}>
+                {
+                  theme ? <Moon /> : <Sun />
+
+                }
+              </button>
             </div>
           </header>) : (
             ''
           )
         }
-        <main className='w-full overflow-auto'>
+        <main className='w-full overflow-auto p-6'>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path='/dashboard' element={
               <ProtectedRoute>
                 <UserDashboard />
+              </ProtectedRoute>
+            } />
+
+            <Route path='/update-users' element={
+              <ProtectedRoute>
+                <UpdateUser />
               </ProtectedRoute>
             } />
             {/* Admin Routes */}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ChevronFirst, ChevronLast, EllipsisVertical, X } from "lucide-react";
+import { ChevronFirst, ChevronLast, EllipsisVertical, X, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, NavLink } from 'react-router-dom';
 import { useGlobalContext } from '../context/context';
 const Sidebar = ({ children }) => {
-  const { expanded, handleSetExpanded } = useGlobalContext();
+  const { expanded, handleSetExpanded, logout } = useGlobalContext();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSetIsOpen = () => {
@@ -43,18 +43,36 @@ const Sidebar = ({ children }) => {
             <p>Jannoelpaed@gmail.com</p>
           </div>
 
-          <div className='absolute bottom-10 -right-6 px-6 py-2  '>
+          <div className={`absolute bottom-10  px-6 py-2  ${expanded ? '-right-9' : "-right-6 "}`}>
             {
-              isOpen ? <div className='flex flex-col justify-end items-center space-y-2 border px-2 py-2'>
-                <Button variant="outline">
+              isOpen && (
+                <div className='flex flex-col justify-end items-center space-y-2  px-2 py-2'>
+                  <Link to={'/update-users'}>
+                    <Button variant="outline" className="w-full">
 
-                  <Link> Settings</Link>
-                </Button>
-                <Button variant="outline">
+                      {
+                        expanded ? (
+                          <Settings className="size-5 " />
+                        ) : "Settings"
+                      }
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={logout}
+                  >
+                    {expanded ? (
+                      <>
+                        <LogOut className="size-5 " />
 
-                  <Link>  Logout</Link>
-                </Button>
-              </div> : ""
+                      </>
+                    ) : (
+                      <h2>Logout</h2>
+                    )}
+                  </Button>
+                </div>
+              )
             }
           </div>
           <button onClick={handleSetIsOpen}>
