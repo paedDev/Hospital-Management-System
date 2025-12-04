@@ -17,6 +17,22 @@ export const GlobalProvider = ({ children }) => {
   const handleSetExpanded = () => {
     setExpanded((prev) => !prev);
   };
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
@@ -49,11 +65,13 @@ export const GlobalProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("theme");
     localStorage.removeItem("user");
     navigate("/");
   };
   const value = {
-    loading, error, login, setLoading, token, navigate, user, setError, setToken, expanded, setExpanded, handleSetExpanded, isAuthenticated: Boolean(token), logout
+    loading, error, login, setLoading, token, navigate, user, setError, setToken, expanded, setExpanded, handleSetExpanded, isAuthenticated: Boolean(token), logout, theme,
+    toggleTheme,
   };
   return (
     <GlobalContext.Provider value={value}>

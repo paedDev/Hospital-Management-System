@@ -19,7 +19,7 @@ import { BASE_URL } from '../../config/config';
 
 const Users = () => {
   const { user } = useGlobalContext();
-  const [loading, setLoading] = useStatze(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState([]);
 

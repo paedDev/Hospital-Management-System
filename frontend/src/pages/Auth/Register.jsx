@@ -58,7 +58,7 @@ const Register = () => {
   };
   return (
     <section className="bg max-w-8xl mx-auto flex items-center min-h-screen justify-center ">
-      <div className="bg-white opacity-60 w-full max-w-lg p-6 relative rounded-xl shadow-2xl ">
+      <div className="bg-white/60 w-full max-w-lg p-6 relative rounded-xl shadow-2xl ">
         <div className="flex items-center justify-center flex-col mt-8 mb-8">
           <img
             src="/images/health_logo.png"
@@ -101,7 +101,7 @@ const Register = () => {
                 value={formData.firstName}
                 placeholder="e.g., Jan Noel"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-blue-500  focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-blue-500  focus:border-blue-500 text-gray-900"
               />
             </div>
             <div className="flex-1">
@@ -119,7 +119,7 @@ const Register = () => {
                 value={formData.lastName}
                 placeholder="e.g., Paed"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-blue-500  focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-blue-500  focus:border-blue-500 text-gray-900"
               />
             </div>
           </div>
@@ -138,7 +138,7 @@ const Register = () => {
               name="email"
               placeholder="e.g., jannoelpaed123@gmail.com"
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-blue-500  focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-blue-500  focus:border-blue-500 text-gray-900"
             />
           </div>
           <div>
@@ -156,7 +156,7 @@ const Register = () => {
               required
               className="mt-1 block w-full px-3
             py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none
-            focus:ring-blue-500 focus:border-blue-500"
+            focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             >
               <option value="" disabled>
                 Select a role
@@ -184,7 +184,7 @@ const Register = () => {
               onChange={handleChange}
               value={formData.password}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
           </div>
 

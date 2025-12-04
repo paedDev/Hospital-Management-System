@@ -24,7 +24,6 @@ export const register = async (req, res) => {
     const newUser = new User({
       firstName,
       lastName,
-
       email,
       password: hashedPassword,
       role,
@@ -130,11 +129,18 @@ export const getSingleUser = async (req, res) => {
 export const updateUsers = async (req, res) => {
   const id = req.params.id;
   const { firstName, lastName, email, password, role } = req.body;
-  if (!firstName && !lastName && !email && !password && role === undefined) {
+  if (
+    !firstName &&
+    !lastName &&
+    email === undefined &&
+    role === undefined &&
+    (password === undefined || password === "")
+  ) {
     return res.status(400).json({
       message: "At least one field must be provided for update",
     });
   }
+
   try {
     let updates = req.body;
     const user = await User.findById(id);
@@ -143,24 +149,35 @@ export const updateUsers = async (req, res) => {
         message: "User not found",
       });
     }
+    if (email) {
+      const existingUser = await User.findOne({ email });
+      if (existingUser && existingUser._id.toString() !== id) {
+        return res
+          .status(409)
+          .json({ message: "Email has been already taken" });
+      }
+    }
+
     if (updates.password) {
       const salt = await bcrypt.genSalt(10);
       updates.password = await bcrypt.hash(updates.password, salt);
     }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { firstName, lastName, email, password, role },
-      {
-        new: true,
-        runValidators: true,
-      }
-    ).select("-password");
+    const updatedUser = await User.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
+
     res.status(200).json({
       message: "User updated successfully",
       user: updatedUser,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating user",
+      error,
+    });
+  }
 };
 //Delete an account
 export const deleteUsers = async (req, res) => {

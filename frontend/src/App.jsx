@@ -15,7 +15,7 @@ import { useState } from 'react';
 import UpdateUser from './pages/UpdateUser.jsx';
 
 const App = () => {
-  const { user, isAuthenticated, logout } = useGlobalContext();
+  const { user, isAuthenticated, logout, theme, toggleTheme } = useGlobalContext();
   const location = useLocation();
 
   // Show sidebar only if authenticated and not on login/register
@@ -24,10 +24,7 @@ const App = () => {
   const isAdmin = user?.role === "admin";
   const isDoctor = user?.role === "doctor";
   const isPatient = user?.role === "patient";
-  const [theme, setTheme] = useState(() => localStorage.getItem("theme"));
-  const handleTheme = () => {
-    setTheme((prev) => !prev);
-  };
+
   return (
     <div className='min-h-screen flex'>
       {showSidebar && (
@@ -89,9 +86,9 @@ const App = () => {
             <div className='flex items-center justify-between'>
               <h1>Welcome, {user?.firstName || 'User'}!</h1>
               {/* Switch */}
-              <button onClick={handleTheme}>
+              <button onClick={toggleTheme}>
                 {
-                  theme ? <Moon /> : <Sun />
+                  theme === "light" ? <Sun /> : <Moon />
 
                 }
               </button>
@@ -100,7 +97,7 @@ const App = () => {
             ''
           )
         }
-        <main className='w-full overflow-auto p-6'>
+        <main className='w-full overflow-auto '>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -110,7 +107,7 @@ const App = () => {
               </ProtectedRoute>
             } />
 
-            <Route path='/update-users' element={
+            <Route path='/update-users/:userId' element={
               <ProtectedRoute>
                 <UpdateUser />
               </ProtectedRoute>
