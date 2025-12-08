@@ -202,3 +202,22 @@ export const deleteAppointment = async (req, res) => {
     });
   }
 };
+
+export const getDoctors = async (req, res) => {
+  try {
+    const doctors = await User.find({ role: "doctor" })
+      .select("-password")
+      .sort({
+        firstName: 1,
+        lastName: 1,
+      });
+    res.status(200).json({
+      doctors,
+      message: "Fetched all doctor",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};

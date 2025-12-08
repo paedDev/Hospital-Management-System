@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use("/api/auth/", userRoutes);
 app.use("/api/", routesChecking);
-app.use("/api/appointment/", appointmentRoutes);
+app.use("/api/appointments/", appointmentRoutes);
 
 connectDB().then(() => {
   app.listen(PORT, () => {
