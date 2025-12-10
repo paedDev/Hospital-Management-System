@@ -142,7 +142,7 @@ export const updateUsers = async (req, res) => {
   }
 
   try {
-    let updates = req.body;
+    let updates = { ...req.body };
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({
@@ -158,9 +158,11 @@ export const updateUsers = async (req, res) => {
       }
     }
 
-    if (updates.password) {
+    if (updates.password && updates.password.trim() !== "") {
       const salt = await bcrypt.genSalt(10);
       updates.password = await bcrypt.hash(updates.password, salt);
+    } else {
+      delete updates.password;
     }
 
     const updatedUser = await User.findByIdAndUpdate(id, updates, {

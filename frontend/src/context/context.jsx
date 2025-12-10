@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 export const GlobalContext = createContext();
 
-
 export const GlobalProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem("user");
@@ -70,13 +69,26 @@ export const GlobalProvider = ({ children }) => {
     navigate("/");
   };
   const value = {
-    loading, error, login, setLoading, token, navigate, user, setError, setToken, expanded, setExpanded, handleSetExpanded, isAuthenticated: Boolean(token), logout, theme,
+    loading,
+    error,
+    login,
+    setLoading,
+    token,
+    navigate,
+    user,
+    setError,
+    setToken,
+    expanded,
+    setExpanded,
+    handleSetExpanded,
+    isAuthenticated: Boolean(token),
+    logout,
+    theme,
     toggleTheme,
+    setUser,
   };
   return (
-    <GlobalContext.Provider value={value}>
-      {children}
-    </GlobalContext.Provider>
+    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
   );
 };
 export const useGlobalContext = () => useContext(GlobalContext);

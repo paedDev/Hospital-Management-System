@@ -22,6 +22,7 @@ import { useState } from "react";
 import UpdateUser from "./pages/UpdateUser.jsx";
 import BookAppointment from "./pages/Appointment/BookAppointment.jsx";
 import ViewAppointment from "./pages/Appointment/ViewAppointment.jsx";
+import SingleAppointment from "./pages/Appointment/SingleAppointment.jsx";
 
 const App = () => {
   const { user, isAuthenticated, logout, theme, toggleTheme } =
@@ -133,6 +134,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <ViewAppointment />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/view-appointment/:id"
+              element={
+                <ProtectedRoute>
+                  <SingleAppointment />
                 </ProtectedRoute>
               }
             />
