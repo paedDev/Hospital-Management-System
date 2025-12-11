@@ -22,7 +22,7 @@ router.get("/", verifyToken, getAppointments);
 router.get(
   "/:id",
   verifyToken,
-  verifyRole("admin", "doctor"),
+  verifyRole("admin", "doctor", "patient"),
   getAppointmentById
 );
 

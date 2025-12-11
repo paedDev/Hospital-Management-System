@@ -86,7 +86,10 @@ const ViewAppointment = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {format(new Date(a.appointmentDate), "PPP p")}
+                      {format(new Date(a.appointmentDate), "PPP")}{" "}
+                      <div className="text-xs text-muted-foreground">
+                        9:00 AM – 5:00 PM
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Badge variant={getStatusVariant(a.status)}>

@@ -49,13 +49,15 @@ const BookAppointment = () => {
         `${BASE_URL}/api/appointments/doctors`
       );
       setDoctors(response.data.doctors);
-    } catch (error) {
+    } catch {
       toast.error("Failed to load doctors");
     }
   };
+
   useEffect(() => {
     fetchDoctors();
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.doctor || !formData.appointmentDate) {
@@ -65,7 +67,7 @@ const BookAppointment = () => {
     try {
       setLoading(true);
       const response = await axiosInstance.post(
-        `${BASE_URL}/api/appointments/`,
+        `${BASE_URL}/api/appointments`,
         formData
       );
       console.log(response.data);
@@ -75,9 +77,8 @@ const BookAppointment = () => {
         appointmentDate: new Date(),
         reason: "",
       });
-      navigate("/view-appointment");
       toast.success("Appointment booked successfully!");
-      console.log(response.data);
+      navigate("/view-appointment");
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to book appointment"
@@ -86,6 +87,7 @@ const BookAppointment = () => {
       setLoading(false);
     }
   };
+
   const handleValueChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -95,88 +97,92 @@ const BookAppointment = () => {
   };
 
   return (
-    <section className="p-6 min-h-screen bg-background py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <section className="p-6 min-h-screen">
+      <div className="max-w-2xl mx-auto">
         <Card>
-          <CardHeader>
-            <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <CalendarIcon className="w-10 h-10 text-primary" />
+          <CardHeader className="space-y-1">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-md border">
+                <CalendarIcon className="w-5 h-5" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl font-semibold">
+                  Book Appointment
+                </CardTitle>
+                <CardDescription className="text-sm">
+                  Choose a doctor and a date for your visit.
+                </CardDescription>
+              </div>
             </div>
-            <CardTitle className="text-3xl font-bold">
-              Book Appointment
-            </CardTitle>
-            <CardDescription>Select doctor and time</CardDescription>
           </CardHeader>
+
           <CardContent>
-            <form action="" onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Title */}
+              <div className="space-y-1.5">
                 <Label
                   htmlFor="title"
-                  className="text-sm font-semibold flex items-center gap-2"
+                  className="text-sm font-medium flex items-center gap-2"
                 >
-                  <User className="size-4" />
+                  <User className="w-4 h-4" />
                   Appointment Title
                 </Label>
                 <Input
                   id="title"
+                  name="title"
                   placeholder="e.g., General Checkup, Flu Consultation"
                   required
-                  name="title"
-                  onChange={handleValueChange}
                   value={formData.title}
+                  onChange={handleValueChange}
                 />
               </div>
-              {/* Doctor Select here */}
-              <div className="space-y-2">
+
+              {/* Doctor */}
+              <div className="space-y-1.5">
                 <Label
-                  className="text-sm font-semibold flex items-center gap-2"
                   htmlFor="doctor"
+                  className="text-sm font-medium flex items-center gap-2"
                 >
-                  <User className="size-4" />
+                  <User className="w-4 h-4" />
                   Select Doctor
                 </Label>
                 <Select
+                  value={formData.doctor}
                   onValueChange={(value) =>
                     setFormData((prev) => ({ ...prev, doctor: value }))
                   }
-                  value={formData.doctor}
                 >
-                  <SelectTrigger className="h-12 w-full">
+                  <SelectTrigger id="doctor" className="w-full">
                     <SelectValue placeholder="Choose a doctor" />
                   </SelectTrigger>
                   <SelectContent>
                     {doctors.map((doctor) => (
                       <SelectItem key={doctor._id} value={doctor._id}>
-                        <div className="flex items-center gap-3">
-                          <div className="size-7 bg-primary/10 rounded-full flex items-center justify-center">
-                            <User className="size-4 text-primary" />
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="font-medium">
-                              {doctor.firstName} {doctor.lastName}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              {doctor.email}
-                            </div>
-                          </div>
-                        </div>
+                        {doctor.firstName} {doctor.lastName}{" "}
+                        <span className="text-xs text-muted-foreground">
+                          ({doctor.email})
+                        </span>
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Date picker */}
+              {/* Date (more compact) */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold flex items-center gap-2">
-                  <CalendarIcon className="size-4" />
-                  Appointment Date & Time
+                <Label className="text-sm font-medium flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4" />
+                  Appointment Date
                 </Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-                  <div className="flex items-center gap-3 p-3 border rounded-lg">
-                    <CalendarIcon className="w-5 h-5 text-muted-foreground" />
-                    <span className="text-lg font-semibold">
-                      {format(formData.appointmentDate, "yyyy-MM-dd")}
+
+                <div className="border rounded-md p-3 space-y-3">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CalendarIcon className="w-4 h-4" />
+                    <span>
+                      Selected:{" "}
+                      <span className="font-medium text-foreground">
+                        {format(formData.appointmentDate, "yyyy-MM-dd")}
+                      </span>
                     </span>
                   </div>
                   <Calendar
@@ -185,10 +191,10 @@ const BookAppointment = () => {
                     onSelect={(date) =>
                       setFormData((prev) => ({
                         ...prev,
-                        appointmentDate: date,
+                        appointmentDate: date || prev.appointmentDate,
                       }))
                     }
-                    className="rounded-md border w-full md:col-span-2"
+                    className="rounded-md border"
                     disabled={(date) =>
                       date < new Date() ||
                       date > new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
@@ -197,9 +203,10 @@ const BookAppointment = () => {
                   />
                 </div>
               </div>
-              {/* Reason Textarea */}
-              <div>
-                <Label className="text-sm font-semibold flex items-center gap-2">
+
+              {/* Reason */}
+              <div className="space-y-1.5">
+                <Label className="text-sm font-medium flex items-center gap-2">
                   <MessageSquare className="w-4 h-4" />
                   Reason for Visit (Optional)
                 </Label>
@@ -209,26 +216,24 @@ const BookAppointment = () => {
                   value={formData.reason}
                   onChange={handleValueChange}
                   placeholder="Describe your symptoms..."
-                  className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-ring resize-vertical min-h-[100px]"
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
-              <div className="flex gap-4 pt-4">
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-2">
                 <Button
                   type="button"
                   variant="outline"
-                  className="flex-1 h-12"
+                  className="flex-1"
                   onClick={() => navigate(-1)}
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  className="flex-1 h-12"
-                  disabled={loading}
-                >
+                <Button type="submit" className="flex-1" disabled={loading}>
                   {loading ? (
                     <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Booking...
                     </>
                   ) : (
