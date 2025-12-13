@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Sidebar from '../../components/sidebar';
-import { useGlobalContext } from '../../context/context';
-import { Navigate } from 'react-router-dom';
-import NotFound from '../NotFound';
+import React, { useEffect, useState } from "react";
+import Sidebar from "../../components/sidebar";
+import { useGlobalContext } from "../../context/context";
+import { Navigate } from "react-router-dom";
+import NotFound from "../NotFound";
 import {
   Table,
   TableBody,
@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/table";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
-import axiosInstance from '../../config/axiosInstance';
-import { BASE_URL } from '../../config/config';
+import axiosInstance from "../../config/axiosInstance";
+import { BASE_URL } from "../../config/config";
 
 const Users = () => {
   const { user } = useGlobalContext();
@@ -31,25 +31,24 @@ const Users = () => {
         const response = await axiosInstance.get(`${BASE_URL}/api/auth/users`);
         console.log(response.data);
         setUserData(response.data.users || []);
-
       } catch (error) {
-        toast.error(error.response?.data?.message || 'Failed to fetch users');
-        setError(error.response?.data?.message || 'Failed to fetch users');
+        toast.error(error.response?.data?.message || "Failed to fetch users");
+        setError(error.response?.data?.message || "Failed to fetch users");
       } finally {
         setLoading(false);
       }
     };
-    if (user?.role === 'admin') {
+    if (user?.role === "admin") {
       fetchUsers();
     }
   }, [user?.role]);
-  if (user?.role !== 'admin') {
+  if (user?.role !== "admin") {
     return <Navigate to="/not-found" replace />;
     // or: return <NotFound />;
   }
   if (loading) {
     return (
-      <section className='p-6'>
+      <section className="p-6">
         <div className="flex items-center justify-center h-64">
           <div className="text-lg">Loading users...</div>
         </div>
@@ -58,7 +57,7 @@ const Users = () => {
   }
   if (error) {
     return (
-      <section className='p-6'>
+      <section className="p-6">
         <div className="text-red-500">Error: {error}</div>
       </section>
     );
@@ -67,7 +66,7 @@ const Users = () => {
     try {
       if (confirm("Delete this user?")) {
         await axiosInstance.delete(`${BASE_URL}/api/auth/users/${userId}`);
-        setUserData((prev) => prev.filter(u => u._id !== userId));
+        setUserData((prev) => prev.filter((u) => u._id !== userId));
       }
     } catch (error) {
       toast.error(error?.response?.data?.error);
@@ -75,7 +74,7 @@ const Users = () => {
   };
   return (
     <>
-      <section className='p-6'>
+      <section className="p-6">
         <Table>
           <TableCaption>A list of Users.</TableCaption>
           <TableHeader>
@@ -88,34 +87,35 @@ const Users = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {
-              userData.length > 0 ? (
-                userData.map((user) => (
-                  <TableRow key={user._id}>
-                    <TableCell>{user.firstName}</TableCell>
-                    <TableCell>{user.lastName}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell className="">
-                      <div>
-                        <Button variant="outline" onClick={() => handleDelete(user._id)}>Delete</Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center">
-                    No users found
+            {userData.length > 0 ? (
+              userData.map((user) => (
+                <TableRow key={user._id}>
+                  <TableCell>{user.firstName}</TableCell>
+                  <TableCell>{user.lastName}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.role}</TableCell>
+                  <TableCell className="">
+                    <div>
+                      <Button
+                        variant="outline"
+                        onClick={() => handleDelete(user._id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
-              )}
-
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center">
+                  No users found
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
-
       </section>
-
     </>
   );
 };

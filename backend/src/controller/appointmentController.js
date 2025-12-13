@@ -1,5 +1,9 @@
 import Appointment from "../model/Appointment.js";
 import User from "../model/User.js";
+import {
+  sendBookingEmail,
+  sendCancellationEmail,
+} from "../utils/emailService.js";
 //CRUD
 
 // Create
@@ -40,6 +44,9 @@ export const createAppointment = async (req, res) => {
     const populated = await Appointment.findById(appointment._id)
       .populate("doctor", "firstName lastName email")
       .populate("patient", "firstName lastName email");
+
+    await sendBookingEmail(populated);
+
     res.status(201).json({
       message: "Appointment created successfully",
       appointment: populated,
@@ -135,9 +142,9 @@ export const updateAppointment = async (req, res) => {
     if (role === "patient" && appointment.patient.toString() !== userId) {
       return res.status(403).json({ message: "Access denied" });
     }
-    if (role === "doctor" && appointment.doctor.toString() !== userId) {
-      return res.status(403).json({ message: "Access denied" });
-    }
+    // if (role === "doctor" && appointment.doctor.toString() !== userId) {
+    //   return res.status(403).json({ message: "Access denied" });
+    // }
 
     const updates = {};
     if (role === "patient" && reason !== undefined) {
@@ -180,24 +187,39 @@ export const deleteAppointment = async (req, res) => {
     const role = req.user.role;
     const userId = req.user.userId;
 
-    const appointment = await Appointment.findById(id);
+    const appointment = await Appointment.findById(id).populate(
+      "patient",
+      "email firstName lastName"
+    );
 
     if (!appointment) {
-      res.status(404).json({
-        message: " Appointment not found",
+      return res.status(404).json({
+        message: "Appointment not found",
       });
     }
+
+    // Patient can only delete own appointment
     if (role === "patient" && appointment.patient.toString() !== userId) {
       return res.status(403).json({ message: "Access denied" });
     }
-    if (role === "doctor" && appointment.doctor.toString() !== userId) {
-      return res.status(403).json({ message: "Access denied" });
+
+    // Optional: send cancellation email before deleting
+    if (appointment.patient?.email) {
+      await sendCancellationEmail(
+        appointment,
+        appointment.cancellationReason || "Cancelled by user"
+      );
     }
+
     await Appointment.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      message: "Appointment deleted successfully",
+    });
   } catch (error) {
-    console.error("Delete appoitnment error", error);
+    console.error("Delete appointment error", error);
     res.status(500).json({
-      message: "Error deleting appoitnment",
+      message: "Error deleting appointment",
       error: error.message,
     });
   }

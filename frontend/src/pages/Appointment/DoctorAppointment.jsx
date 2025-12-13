@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useGlobalContext } from "../../context/context";
 
-const ViewAppointment = () => {
+const DoctorAppointments = () => {
   const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -38,6 +38,8 @@ const ViewAppointment = () => {
     }
   };
 
+  //   fetch delete
+
   const handleDelete = async (id) => {
     if (!confirm("Delete this appointment?")) return;
     try {
@@ -54,7 +56,6 @@ const ViewAppointment = () => {
       );
     }
   };
-
   useEffect(() => {
     fetchAppointment();
   }, []);
@@ -76,12 +77,12 @@ const ViewAppointment = () => {
   return (
     <section className="p-6 min-h-screen">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-semibold mb-4">My Appointments</h1>
+        <h1 className="text-2xl font-semibold mb-4">Patient Appointments</h1>
         <Table>
           <TableCaption>
             {loading
               ? "Loading appointments..."
-              : "A list of your recent appointments."}
+              : "Appointments scheduled with you."}
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -118,7 +119,7 @@ const ViewAppointment = () => {
                     <TableCell className="capitalize text-sm">
                       {a.paymentStatus}
                     </TableCell>
-                    <TableCell className=" flex gap-2">
+                    <TableCell className="flex gap-2">
                       <Button
                         variant="outline"
                         size="sm"
@@ -126,7 +127,15 @@ const ViewAppointment = () => {
                       >
                         View
                       </Button>
-                      {role === "patient" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/update-appointment/${a._id}`)}
+                      >
+                        Update
+                      </Button>
+
+                      {role === "admin" && (
                         <Button
                           variant="destructive"
                           size="sm"
@@ -152,4 +161,4 @@ const ViewAppointment = () => {
   );
 };
 
-export default ViewAppointment;
+export default DoctorAppointments;

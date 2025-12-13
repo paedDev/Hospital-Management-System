@@ -23,6 +23,8 @@ import UpdateUser from "./pages/UpdateUser.jsx";
 import BookAppointment from "./pages/Appointment/BookAppointment.jsx";
 import ViewAppointment from "./pages/Appointment/ViewAppointment.jsx";
 import SingleAppointment from "./pages/Appointment/SingleAppointment.jsx";
+import UpdateAppointment from "./pages/Appointment/UpdateAppointment.jsx";
+import DoctorAppointments from "./pages/Appointment/DoctorAppointment.jsx";
 
 const App = () => {
   const { user, isAuthenticated, logout, theme, toggleTheme } =
@@ -54,6 +56,11 @@ const App = () => {
                 text={"Manage Users"}
                 to={"/manage-users"}
               />
+              <SideBarItem
+                icon={<ClipboardClock />}
+                text={"View Appointment"}
+                to={"/patient-appointment"}
+              />
             </>
           )}
 
@@ -61,12 +68,12 @@ const App = () => {
             <>
               <SideBarItem
                 icon={<LayoutDashboard />}
-                text={"Doctor DashboarWd"}
+                text={"Doctor Dashboard"}
                 to={"/doctor/dashboard"}
               />
               <SideBarItem
-                icon={<LayoutDashboard />}
-                text={"View Patient Appointment"}
+                icon={<ClipboardClock />}
+                text={"View Appointment"}
                 to={"/patient-appointment"}
               />
             </>
@@ -160,6 +167,22 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/update-appointment/:id"
+              element={
+                <ProtectedRoute>
+                  <UpdateAppointment />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/patient-appointment"
+              element={
+                <ProtectedRoute>
+                  <DoctorAppointments />
                 </ProtectedRoute>
               }
             />

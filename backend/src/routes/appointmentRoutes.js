@@ -18,14 +18,14 @@ router.post("/", verifyToken, verifyRole("patient"), createAppointment);
 // Admin can get all -> patient and doctor can get theirs
 router.get("/", verifyToken, getAppointments);
 
-//
+// get by id
 router.get(
   "/:id",
   verifyToken,
   verifyRole("admin", "doctor", "patient"),
   getAppointmentById
 );
-
+// Update
 router.put(
   "/:id",
   verifyToken,
@@ -33,9 +33,9 @@ router.put(
   updateAppointment
 );
 router.delete(
-  "/appointments/:id",
+  "/:id",
   verifyToken,
-  verifyRole("patient", "doctor", "admin"),
+  verifyRole("patient", "admin"),
   deleteAppointment
 );
 
