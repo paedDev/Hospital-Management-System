@@ -199,7 +199,7 @@ export const deleteAppointment = async (req, res) => {
     }
 
     // Patient can only delete own appointment
-    if (role === "patient" && appointment.patient.toString() !== userId) {
+    if (role === "patient" && appointment.patient._id.toString() !== userId) {
       return res.status(403).json({ message: "Access denied" });
     }
 

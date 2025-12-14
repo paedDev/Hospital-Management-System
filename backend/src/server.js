@@ -15,7 +15,10 @@ app.use(
   })
 );
 app.use(express.json());
-
+app.use((req, res, next) => {
+  console.log(`Request method is ${req.method} and Request URL is ${req.url}`);
+  next();
+});
 app.use("/api/auth/", userRoutes);
 app.use("/api/", routesChecking);
 app.use("/api/appointments/", appointmentRoutes);
