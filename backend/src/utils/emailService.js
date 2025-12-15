@@ -2,10 +2,10 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-console.log("EMAIL_HOST:", process.env.EMAIL_HOST);
-console.log("EMAIL_PORT:", process.env.EMAIL_PORT);
-console.log("EMAIL_USER (SMTP Login):", process.env.EMAIL_USER);
-console.log("EMAIL_SENDER (Validated From):", process.env.EMAIL_SENDER); // Added log for debug
+// console.log("EMAIL_HOST:", process.env.EMAIL_HOST);
+// console.log("EMAIL_PORT:", process.env.EMAIL_PORT);
+// console.log("EMAIL_USER (SMTP Login):", process.env.EMAIL_USER);
+// console.log("EMAIL_SENDER (Validated From):", process.env.EMAIL_SENDER); // Added log for debug
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: Number(process.env.EMAIL_PORT) || 587,
