@@ -25,6 +25,7 @@ import ViewAppointment from "./pages/Appointment/ViewAppointment.jsx";
 import SingleAppointment from "./pages/Appointment/SingleAppointment.jsx";
 import UpdateAppointment from "./pages/Appointment/UpdateAppointment.jsx";
 import DoctorAppointments from "./pages/Appointment/DoctorAppointment.jsx";
+import Home from "./pages/Landing Page/Home.jsx";
 
 const App = () => {
   const { user, isAuthenticated, logout, theme, toggleTheme } =
@@ -34,7 +35,7 @@ const App = () => {
   // Show sidebar only if authenticated and not on login/register
   const showSidebar =
     isAuthenticated &&
-    !["/login", "/register", "/not-found"].includes(location.pathname);
+    !["/login", "/register", "/not-found", "/"].includes(location.pathname);
 
   const isAdmin = user?.role === "admin";
   const isDoctor = user?.role === "doctor";
@@ -118,6 +119,7 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Home />} />
             <Route
               path="/dashboard"
               element={
