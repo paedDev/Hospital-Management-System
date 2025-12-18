@@ -5,7 +5,7 @@ const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const closeMenu = () => setMenu(false);
   return (
-    <nav className="p-4  sticky top-0 left-0 z-50 bg-gray-100/50 shadow-xl  ">
+    <nav className="p-4  fixed top-0 left-0 z-50 shadow-xl w-full backdrop-blur-2xl  ">
       <div className="flex items-center justify-between max-w-6xl mx-auto  px-4 py-3 lg:py-4 ">
         {/* Logo */}
         <Link to={"/"} className="font-bold tracking-wider">
@@ -63,7 +63,7 @@ const Navbar = () => {
       </div>
 
       <div
-        className={`md:hidden border-t bg-gray-50 overflow-hidden transition-all duration-500
+        className={`md:hidden border-t backdrop-blur-2xl overflow-hidden transition-all duration-500
           ${menu ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div className="max-w-6xl mx-auto px-4 py-4 space-y-3 flex flex-col items-center justify-center">

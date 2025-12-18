@@ -25,7 +25,8 @@ import ViewAppointment from "./pages/Appointment/ViewAppointment.jsx";
 import SingleAppointment from "./pages/Appointment/SingleAppointment.jsx";
 import UpdateAppointment from "./pages/Appointment/UpdateAppointment.jsx";
 import DoctorAppointments from "./pages/Appointment/DoctorAppointment.jsx";
-import Home from "./pages/Landing Page/Home.jsx";
+import Home from "./pages/Landing Page/LandingPage.jsx";
+import LandingPage from "./pages/Landing Page/LandingPage.jsx";
 
 const App = () => {
   const { user, isAuthenticated, logout, theme, toggleTheme } =
@@ -119,7 +120,7 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<LandingPage />} />
             <Route
               path="/dashboard"
               element={
