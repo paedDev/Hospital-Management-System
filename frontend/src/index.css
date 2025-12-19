@@ -5,9 +5,11 @@
 @custom-variant dark (&:is(.dark *));
 
 /* Everything else goes below */
+html {
+  scroll-behavior: smooth;
+}
 body {
   overflow-x: hidden;
-  scroll-behavior: smooth;
   width: 100vw;
   font-family: "Roboto", sans-serif;
 }
