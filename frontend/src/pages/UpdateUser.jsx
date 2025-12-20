@@ -45,9 +45,7 @@ const UpdateUser = () => {
         formData
       );
 
-      toast.success(response.data.message);
       setFormData((prev) => ({ ...prev, password: "" }));
-      navigate("/dashboard");
       const updatedUser = response.data.user;
       if (user && user.id === updatedUser._id) {
         const merged = {
@@ -60,6 +58,14 @@ const UpdateUser = () => {
 
         setUser(merged);
         localStorage.setItem("user", JSON.stringify(merged));
+      }
+      toast.success(response.data.message || "Update successful");
+      if (updatedUser.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (updatedUser.role === "patient") {
+        navigate("/dashboard");
+      } else if (updatedUser.role === "doctor") {
+        navigate("/doctor/dashboard");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Update failed");

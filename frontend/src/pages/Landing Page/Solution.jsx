@@ -111,7 +111,7 @@ const Solution = () => {
   return (
     <section
       ref={containerRef}
-      className="min-h-screen w-full overflow-hidden bg-gray-50 py-20"
+      className="min-h-screen w-full  bg-gray-50 py-20"
     >
       <div className="text-center space-y-6 mb-20">
         <span className="header-badge text-orange-800 uppercase bg-orange-100 px-4 py-2 rounded-2xl font-bold text-sm inline-block">

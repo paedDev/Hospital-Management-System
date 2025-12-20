@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/sidebar";
 import { useGlobalContext } from "../../context/context";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import NotFound from "../NotFound";
 import {
   Table,
@@ -22,7 +22,7 @@ const Users = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
